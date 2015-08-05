@@ -9,6 +9,9 @@ assert = chai.assert
 Untangle = require '../lib/untangle.js'
 
 describe 'untangle', ->
+	beforeEach ->
+		Untangle.resetAll "HARD"
+
 	it 'exposes .subscribe, .unSubscribe, .publish, .respond and .unRespond', ->
 		expect(typeof Untangle.subscribe  ).to.equal("function")
 		expect(typeof Untangle.unSubscribe).to.equal("function")
@@ -101,6 +104,9 @@ describe 'untangle', ->
 
 	describe ".request", ->
 		it "request data from responder", ->
+			returnFunction = (data) -> 1
+			Untangle.respond("messageType", returnFunction)
+			assert(Untangle.request("messageType", "data"), 1)
 
 		it "does not crash if there are no responders", ->
 			expect(Untangle.request.bind(Untangle, "messageType", "data")).to.not.throw(Error)
@@ -174,4 +180,19 @@ describe 'untangle', ->
 			Untangle.reroute("messageType2", "messageType", ((data)-> data+" transformed"))
 			Untangle.unReroute("messageType2", "messageType")
 			Untangle.publish("messageType2", "data")
+			spy.should.have.not.been.called
+
+	describe ".resetAll", ->
+		it "does nothing if not HARD is sent to it.", ->
+			spy = sinon.spy()
+			Untangle.subscribe("messageType", spy)
+			Untangle.resetAll("HARD Wrong")
+			Untangle.publish("messageType", "data")
+			expect(spy).to.have.been.calledWith("data")
+
+		it "subscribers no longer get their messages", ->
+			spy = sinon.spy()
+			Untangle.subscribe("messageType", spy)
+			Untangle.resetAll("HARD")
+			Untangle.publish("messageType", "data")
 			spy.should.have.not.been.called

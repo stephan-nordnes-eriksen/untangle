@@ -1,56 +1,56 @@
 
 class Untangle
-	subscribers = {}
-	subscribersAll = {}
-	responders = {}
-	reroutes = {}
+	_subscribers = {}
+	_subscribersAll = {}
+	_responders = {}
+	_reroutes = {}
 
 	@subscribe: (type, callback) ->
 		unless typeof callback == "function"
 			throw new Error "Callback not a function"
 		
-		if subscribers[type]
-			subscribers[type].push( callback )
+		if _subscribers[type]
+			_subscribers[type].push( callback )
 		else
-			subscribers[type] = [callback]
+			_subscribers[type] = [callback]
 
 	@unSubscribe: (type, callback) ->
 		unless typeof callback == "function"
 			throw new Error "Callback not a function"
-		if subscribers[type]
-			index = subscribers[type].indexOf callback
-			subscribers[type].splice(index, 1) if index > -1
+		if _subscribers[type]
+			index = _subscribers[type].indexOf callback
+			_subscribers[type].splice(index, 1) if index > -1
 
 	@respond: (type, callback) ->
 		unless typeof callback == "function"
 			throw new Error "Callback not a function"
 		
-		responders[type] = callback
+		_responders[type] = callback
 			
 
 	@unRespond: (type, callback) ->
 		unless typeof callback == "function"
 			throw new Error "Callback not a function"
-		if responders[type] && responders[type] == callback
-			responders[type] = undefined
+		if _responders[type] && _responders[type] == callback
+			_responders[type] = undefined
 
 	@publish: (type, data) ->
-		if subscribers[type]
-			for subscriber in subscribers[type]
+		if _subscribers[type]
+			for subscriber in _subscribers[type]
 				setTimeout(subscriber(data), 0)
 
-		for subscribesToAll, callback of subscribersAll
+		for subscribesToAll, callback of _subscribersAll
 			setTimeout(callback(type, data), 0)
 
-		if reroutes[type]
-			for toType, callback of reroutes[type]
+		if _reroutes[type]
+			for toType, callback of _reroutes[type]
 				if typeof callback == "function"
 					Untangle.publish(toType, callback(data))
 				else
 					Untangle.publish(toType, data)
 
 	@request: (type, data) ->
-		return responders[type](data) if responders[type]
+		return _responders[type](data) if _responders[type]
 		return null
 
 	@helpers: ->
@@ -70,18 +70,29 @@ class Untangle
 	@subscribeAll: (callback) ->
 		unless typeof callback == "function"
 			throw new Error "Callback not a function"
-		subscribersAll[callback] = callback
+		_subscribersAll[callback] = callback
 
 	@unSubscribeAll: (callback) ->
-		delete subscribersAll[callback]
+		delete _subscribersAll[callback]
 
 	@reroute: (fromType, toType, callback=true) ->
-		unless reroutes[fromType]
-			reroutes[fromType] = {}
+		unless _reroutes[fromType]
+			_reroutes[fromType] = {}
 		
-		reroutes[fromType][toType] = callback
+		_reroutes[fromType][toType] = callback
 
 	@unReroute: (fromType, toType) ->
-		delete reroutes[fromType][toType] if reroutes[fromType] && reroutes[fromType][toType]
+		delete _reroutes[fromType][toType] if _reroutes[fromType] && _reroutes[fromType][toType]
+
+	@resetAll: (data) ->
+		if data == "HARD"
+			for i of _subscribers
+				delete _subscribers[i]
+			for i of _subscribersAll
+				delete _subscribersAll[i]
+			for i of _responders
+				delete _responders[i]
+			for i of _reroutes
+				delete _reroutes[i]
 
 module.exports = Untangle
