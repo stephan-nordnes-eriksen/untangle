@@ -1,3 +1,5 @@
+![Untangle](/Untangle.png?raw=true)
+
 # untangle
 
 [![Dependency status](https://img.shields.io/david/stephan-nordnes-eriksen/untangle.svg?style=flat)](https://david-dm.org/stephan-nordnes-eriksen/untangle)
