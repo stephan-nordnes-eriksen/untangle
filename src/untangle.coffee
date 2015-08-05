@@ -68,6 +68,8 @@ class Untangle
 			Untangle.request(this.toString(), data)
 		String.prototype.reroute = (data, callback) ->
 			Untangle.reroute(this.toString(), data, callback)
+		String.prototype.unReroute = (data) ->
+			Untangle.unReroute(this.toString(), data)
 
 	@subscribeAll: (callback) ->
 		unless typeof callback == "function"

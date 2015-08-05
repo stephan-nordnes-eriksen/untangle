@@ -26,10 +26,11 @@ describe 'untangle', ->
 			expect(Untangle.respond.bind(Untangle    , "Test", (->) )).to.not.throw(Error);
 			expect(Untangle.unRespond.bind(Untangle  , "Test", (->) )).to.not.throw(Error);
 		it 'throws error if callback isn\'t function', ->
-			expect(Untangle.subscribe  .bind(Untangle, "Test", 1 )).to.throw(Error);
-			expect(Untangle.unSubscribe.bind(Untangle, "Test", 1 )).to.throw(Error);
-			expect(Untangle.respond    .bind(Untangle, "Test", 1 )).to.throw(Error);
-			expect(Untangle.unRespond  .bind(Untangle, "Test", 1 )).to.throw(Error);
+			expect(Untangle.subscribe   .bind(Untangle, "Test", 1 )).to.throw(Error);
+			expect(Untangle.unSubscribe .bind(Untangle, "Test", 1 )).to.throw(Error);
+			expect(Untangle.respond     .bind(Untangle, "Test", 1 )).to.throw(Error);
+			expect(Untangle.unRespond   .bind(Untangle, "Test", 1 )).to.throw(Error);
+			expect(Untangle.subscribeAll.bind(Untangle, "Test", 1 )).to.throw(Error);
 
 	describe ".subscribe", ->
 		it "receives published message of type", ->
@@ -128,11 +129,42 @@ describe 'untangle', ->
 			expect("string").to.respondTo("respond")
 			expect("string").to.respondTo("unRespond")
 			expect("string").to.respondTo("reroute")
+			expect("string").to.respondTo("unReroute")
 		it "receives messages when subscribe", ->
 			spy = sinon.spy()
 			"messageType".subscribe(spy)
 			"messageType".publish("data")
 			expect(spy).to.have.been.calledWith("data")
+		it "receives messages when subscribe", ->
+			spy = sinon.spy()
+			"messageType".subscribe(spy)
+			"messageType".unSubscribe(spy)
+			"messageType".publish("data")
+			spy.should.have.not.been.called
+		it "receives messages when respond", ->
+			spy = sinon.spy()
+			"messageType".respond(spy)
+			"messageType".request("data")
+			expect(spy).to.have.been.calledWith("data")
+		it "receives messages when subscribe", ->
+			spy = sinon.spy()
+			"messageType".respond(spy)
+			"messageType".unRespond(spy)
+			"messageType".request("data")
+			spy.should.have.not.been.called
+		it "reroutes correctly", ->
+			spy = sinon.spy()
+			"messageType".subscribe(spy)
+			"messageType2".reroute("messageType")
+			"messageType2".publish("data")
+			expect(spy).to.have.been.calledWith("data")
+		it "unReroutes correctly", ->
+			spy = sinon.spy()
+			"messageType".subscribe(spy)
+			"messageType2".reroute("messageType")
+			"messageType2".unReroute("messageType")
+			"messageType2".publish("data")
+			spy.should.have.not.been.called
 
 	describe ".subscribeAll", ->
 		it "receives all types of published messages", ->
