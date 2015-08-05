@@ -110,7 +110,7 @@ describe 'untangle', ->
 			
 
 
-	describe "helpers", ->
+	describe ".helpers", ->
 		before ->
 			Untangle.helpers()
 
@@ -121,3 +121,57 @@ describe 'untangle', ->
 			expect("string").to.respondTo("unSubscribe")
 			expect("string").to.respondTo("respond")
 			expect("string").to.respondTo("unRespond")
+
+	describe ".subscribeAll", ->
+		it "receives all types of published messages", ->
+			spy = sinon.spy()
+			Untangle.subscribeAll(spy)
+			Untangle.publish("messageType", "data")
+			expect(spy).to.have.been.calledWith("messageType", "data")
+		it "receives multiple callbacks", ->
+			spy = sinon.spy()
+			Untangle.subscribeAll(spy)
+			Untangle.publish("messageType", "data")
+			Untangle.publish("messageType2", "data2")
+			expect(spy).to.have.been.calledWith("messageType", "data")
+			expect(spy).to.have.been.calledWith("messageType2", "data2")
+	
+	describe ".unSubscribeAll", ->
+		it "receives no published messages", ->
+			spy = sinon.spy()
+			Untangle.subscribeAll(spy)
+			Untangle.unSubscribeAll(spy)
+			Untangle.publish("messageType", "data")
+			spy.should.have.not.been.called
+
+	describe ".reroute", ->
+		it "reroutes messages of type1 to type2", ->
+			spy = sinon.spy()
+			Untangle.subscribe("messageType", spy)
+			Untangle.reroute("messageType2", "messageType")
+			Untangle.publish("messageType2", "data")
+			expect(spy).to.have.been.calledWith("data")
+
+		it "reroutes and transforms data of type1 to type2", ->
+			spy = sinon.spy()
+			Untangle.subscribe("messageType", spy)
+			Untangle.reroute("messageType2", "messageType", ((data)-> data+" transformed"))
+			Untangle.publish("messageType2", "data")
+
+			expect(spy).to.have.been.calledWith("data transformed")
+
+	describe ".unReroute", ->
+		it "does not reroutes messages of type1 to type2", ->
+			spy = sinon.spy()
+			Untangle.subscribe("messageType", spy)
+			Untangle.reroute("messageType2", "messageType")
+			Untangle.unReroute("messageType2", "messageType")
+			Untangle.publish("messageType2", "data")
+			spy.should.have.not.been.called
+		it "does not reroutes and transforms data of type1 to type2", ->
+			spy = sinon.spy()
+			Untangle.subscribe("messageType", spy)
+			Untangle.reroute("messageType2", "messageType", ((data)-> data+" transformed"))
+			Untangle.unReroute("messageType2", "messageType")
+			Untangle.publish("messageType2", "data")
+			spy.should.have.not.been.called
