@@ -1,22 +1,22 @@
 {
-  "name": "event-aggregator",
+  "name": "untangle",
   "version": "1.0.0",
   "description": "Awesome module",
   "keywords": [
     "keyword1",
     "keyword2"
   ],
-  "homepage": "https://github.com/stephan-nordnes-eriksen/event-aggregator",
-  "bugs": "https://github.com/stephan-nordnes-eriksen/event-aggregator/issues",
+  "homepage": "https://github.com/stephan-nordnes-eriksen/untangle",
+  "bugs": "https://github.com/stephan-nordnes-eriksen/untangle/issues",
   "author": {
     "name": "Stephan Nordnes Eriksen",
     "email": "",
     "url": "https://github.com/stephan-nordnes-eriksen"
   },
-  "main": "./lib/event-aggregator.js",
+  "main": "./lib/untangle.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/stephan-nordnes-eriksen/event-aggregator.git"
+    "url": "https://github.com/stephan-nordnes-eriksen/untangle.git"
   },
   "scripts": {
     "test": "gulp test",

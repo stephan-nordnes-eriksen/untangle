@@ -1,5 +1,5 @@
 
-class EventAggregator
+class Untangle
 	subscribers = {}
 	responders = {}
 
@@ -43,16 +43,16 @@ class EventAggregator
 
 	@helpers: ->
 		String.prototype.subscribe = (data) ->
-			EventAggregator.subscribe(this, data)
+			Untangle.subscribe(this, data)
 		String.prototype.unSubscribe = (data) ->
-			EventAggregator.unSubscribe(this, data)
+			Untangle.unSubscribe(this, data)
 		String.prototype.respond = (data) ->
-			EventAggregator.respond(this, data)
+			Untangle.respond(this, data)
 		String.prototype.unRespond = (data) ->
-			EventAggregator.unRespond(this, data)	
+			Untangle.unRespond(this, data)	
 		String.prototype.publish = (data) ->
-			EventAggregator.publish(this, data)
+			Untangle.publish(this, data)
 		String.prototype.request = (data) ->
-			EventAggregator.request(this, data)
+			Untangle.request(this, data)
 
-module.exports = EventAggregator
+module.exports = Untangle

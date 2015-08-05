@@ -1,10 +1,10 @@
-# event-aggregator
+# untangle
 
-[![Dependency status](https://img.shields.io/david/stephan-nordnes-eriksen/event-aggregator.svg?style=flat)](https://david-dm.org/stephan-nordnes-eriksen/event-aggregator)
-[![devDependency Status](https://img.shields.io/david/dev/stephan-nordnes-eriksen/event-aggregator.svg?style=flat)](https://david-dm.org/stephan-nordnes-eriksen/event-aggregator#info=devDependencies)
-[![Build Status](https://img.shields.io/travis/stephan-nordnes-eriksen/event-aggregator.svg?style=flat&branch=master)](https://travis-ci.org/stephan-nordnes-eriksen/event-aggregator)
+[![Dependency status](https://img.shields.io/david/stephan-nordnes-eriksen/untangle.svg?style=flat)](https://david-dm.org/stephan-nordnes-eriksen/untangle)
+[![devDependency Status](https://img.shields.io/david/dev/stephan-nordnes-eriksen/untangle.svg?style=flat)](https://david-dm.org/stephan-nordnes-eriksen/untangle#info=devDependencies)
+[![Build Status](https://img.shields.io/travis/stephan-nordnes-eriksen/untangle.svg?style=flat&branch=master)](https://travis-ci.org/stephan-nordnes-eriksen/untangle)
 
-[![NPM](https://nodei.co/npm/event-aggregator.svg?style=flat)](https://npmjs.org/package/event-aggregator)
+[![NPM](https://nodei.co/npm/untangle.svg?style=flat)](https://npmjs.org/package/untangle)
 
 An event aggregator for using the Publish/Subscribe pattern, also known as Pub/Sub. This version also have a Respond/Request feature.
 
@@ -12,7 +12,7 @@ Used together these two features allow you to create truly decoupled code.
 
 ## Installation
 
-    npm install event-aggregator
+    npm install untangle
 
 ## Usage Example
 
