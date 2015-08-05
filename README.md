@@ -138,7 +138,7 @@ User = (function() {
   function User(name) {
     this.name = name;
     "logData".subscribe(this.loggerMethod);
-    "getUserName".respond(this.getName);
+    "getUserName".respond(this.getName.bind(this));
     "tick".subscribe(this.eatIfFish)
   }
   User.prototype.loggerMethod = function(data) {
@@ -152,34 +152,47 @@ User = (function() {
       "I ate some fish".publish("and it was good")
     }
   };
+
+  return User;
 })();
 
 Fish = (function() {
   function Fish() {
     "isThereFish".respond(this.isFish)
+    "I ate some fish".subscribe(this.eatFish)
   }
   Fish.prototype.isFish = function() {
     return "getTick".request() > 10;
   };
+  Fish.prototype.eatFish = function(data) {
+    console.log("Omg! so horrible! And you even said " + data);
+  };
+
+  return Fish;
 })();
 
 Ticker = (function() {
   var timer;
-  var tick = 0;
-  function Ticker() {
-    var myTimer = setInterval(function() {
-      tick += 1;
-      "tick".publish(tick)
-    }, 500);
-    "getTick".respond(this.getTick);
-  }
+  var tick;
   Ticker.prototype.getTick = function() {
     return this.tick;
   };
+  function Ticker() {
+    var self = this;
+    "getTick".respond(this.getTick.bind(this));
+    this.timer = setInterval(function() {
+      if(!self.tick){self.tick = 0}
+      self.tick += 1;
+      "tick".publish(self.tick);
+    }, 500);
+  }
+  
+  return Ticker;
 })();
 
-var aUser = new User("The Users Name")
-var fish = new Fish()
+var aUser = new User("The Users Name");
+var fish = new Fish();
+var ticker = new Ticker();
 
 //...
 
