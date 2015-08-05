@@ -24,7 +24,7 @@ Untangle is a EventAggregator, or Pub/Sub, library. Untangle is meant to be used
 1. No classes can know about the existence of other classes.
 2. A class must be completely self-contained.
 3. All interchange of information must go through the Untangle system.
-4. All interchanged data must be "privitives", aka. boolean, number, string, or a hash or array consiting of the former datatypes.
+4. All interchanged data must be "primitives", aka. boolean, number, string, or a hash or array consiting of the former datatypes.
 
 Untangle has a concept not normally used in the Pub/Sub pattern, namely Respond/Request. This is in a way the opposite of Pub/Sub. In Untangle you can register that you `respond` to a certain message type. Whenever code `request` this massage later, then the callback which `respond` to this will return data to the requestee.
 
@@ -84,9 +84,95 @@ callback = function(data){data + " returned"}
 => null
 ```
 
-## Testing
+### More methods
 
-    npm test
+#### .subscribeAll
+```javascript
+callback = function(messageType, data){console.log("Got message of type" + messageType + ", with data " + data)}
+Untangle.subscribeAll(callback) //Will receive every published message created. Great for logging all activity in the system.
+```
+
+#### .reroute + .unReroute
+```javascript
+callback = function( data){console.log(data)}
+Untangle.subscribe("test2", callback)
+Untangle.subscribe("test3", callback)
+Untangle.reroute("test", "test2")
+Untangle.reroute("test", "test3", function(data){data + " modified"})
+
+"test".publish("test", "data")
+
+=> "data"
+=> "data modified"
+
+Untangle.unReroute("test", "test2")
+Untangle.unReroute("test", "test3")
+"test".publish("test", "data")
+
+=> no output
+```
+
+## Using Untangle on a system scale
+
+```javascript
+Untangle = require("untangle")
+Untangle.helpers()
+
+//Simulate a class similar to how CoffeeScript does it
+User = (function() {
+  var name;
+  function User(name) {
+    this.name = name;
+    "logData".subscribe(this.loggerMethod);
+    "getUserName".respond(this.getName);
+    "tick".subscribe(this.eatIfFish)
+  }
+  User.prototype.loggerMethod = function(data) {
+    return console.log(data);
+  };
+  User.prototype.getName = function() {
+    return this.name;
+  };
+  User.prototype.eatIfFish = function(tick) {
+    if("isThereFish".request()){
+      "I ate some fish".publish("and it was good")
+    }
+  };
+})();
+
+Fish = (function() {
+  function Fish() {
+    "isThereFish".respond(this.isFish)
+  }
+  Fish.prototype.isFish = function() {
+    return "getTick".request() > 10;
+  };
+})();
+
+Ticker = (function() {
+  var timer;
+  var tick = 0;
+  function Ticker() {
+    var myTimer = setInterval(function() {
+      tick += 1;
+      "tick".publish(tick)
+    }, 500);
+    "getTick".respond(this.getTick);
+  }
+  Ticker.prototype.getTick = function() {
+    return this.tick;
+  };
+})();
+
+var aUser = new User("The Users Name")
+var fish = new Fish()
+
+//...
+
+var username = "getUserName".request()
+
+```
+
 
 ## License
 
