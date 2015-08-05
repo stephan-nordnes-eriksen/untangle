@@ -103,6 +103,11 @@ describe 'untangle', ->
 		it "does not crash if there are no subscribers", ->
 			expect(Untangle.publish.bind(Untangle, "messageType", "data")).
 				to.not.throw(Error)
+		it "allows publishing without data", ->
+			spy = sinon.spy()
+			Untangle.subscribe("messageType", spy)
+			Untangle.publish("messageType")
+			expect(spy).to.have.been.calledWith(undefined)
 
 	describe ".request", ->
 		it "request data from responder", ->
@@ -116,7 +121,16 @@ describe 'untangle', ->
 		
 		it "returns null if there are no responders", ->
 			expect(Untangle.request("messageType", "data")).to.equal(null)
-			
+		
+		it "accepts request without parameter", ->
+			returnFunction = (data) -> 1
+			Untangle.respond("messageType", returnFunction)
+			assert(Untangle.request("messageType"), 1)
+		it "accepts request without parameter when returnFunction has no params", ->
+			returnFunction = -> 1
+			Untangle.respond("messageType", returnFunction)
+			assert(Untangle.request("messageType"), 1)
+
 
 
 	describe ".helpers", ->
