@@ -127,6 +127,12 @@ describe 'untangle', ->
 			expect("string").to.respondTo("unSubscribe")
 			expect("string").to.respondTo("respond")
 			expect("string").to.respondTo("unRespond")
+			expect("string").to.respondTo("reroute")
+		it "receives messages when subscribe", ->
+			spy = sinon.spy()
+			"messageType".subscribe(spy)
+			"messageType".publish("data")
+			expect(spy).to.have.been.calledWith("data")
 
 	describe ".subscribeAll", ->
 		it "receives all types of published messages", ->

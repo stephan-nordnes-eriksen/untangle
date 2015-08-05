@@ -55,17 +55,19 @@ class Untangle
 
 	@helpers: ->
 		String.prototype.subscribe = (data) ->
-			Untangle.subscribe(this, data)
+			Untangle.subscribe(this.toString(), data)
 		String.prototype.unSubscribe = (data) ->
-			Untangle.unSubscribe(this, data)
+			Untangle.unSubscribe(this.toString(), data)
 		String.prototype.respond = (data) ->
-			Untangle.respond(this, data)
+			Untangle.respond(this.toString(), data)
 		String.prototype.unRespond = (data) ->
-			Untangle.unRespond(this, data)	
+			Untangle.unRespond(this.toString(), data)
 		String.prototype.publish = (data) ->
-			Untangle.publish(this, data)
+			Untangle.publish(this.toString(), data)
 		String.prototype.request = (data) ->
-			Untangle.request(this, data)
+			Untangle.request(this.toString(), data)
+		String.prototype.reroute = (data, callback) ->
+			Untangle.reroute(this.toString(), data, callback)
 
 	@subscribeAll: (callback) ->
 		unless typeof callback == "function"
