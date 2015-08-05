@@ -32,51 +32,57 @@ How to do the basics:
 
 ### Subscribing
 
-    Untangle = require("untangle")
+```javascript
+Untangle = require("untangle")
 
-    callback = function(data){console.log(data)}
-    Untangle.subscribe("MessageType", callback)
-    Untangle.publish("MessageType", "data")
-    => "data"
-    Untangle.unSubscribe("MessageType", callback)
-    Untangle.publish("MessageType", "data")
-    => no output
+callback = function(data){console.log(data)}
+Untangle.subscribe("MessageType", callback)
+Untangle.publish("MessageType", "data")
+=> "data"
+Untangle.unSubscribe("MessageType", callback)
+Untangle.publish("MessageType", "data")
+=> no output
+```
 
 ### Responding
 
-    Untangle = require("untangle")
+```javascript
+Untangle = require("untangle")
 
-    callback = function(data){data + " returned"}
-    Untangle.respond("MessageType", callback)
-    result = Untangle.reuest("MessageType", "data")
-    console.log(result)
-    => "data returned"
+callback = function(data){data + " returned"}
+Untangle.respond("MessageType", callback)
+result = Untangle.reuest("MessageType", "data")
+console.log(result)
+=> "data returned"
 
-    Untangle.unRespond("MessageType", callback)
-    result = Untangle.reuest("MessageType", "data")
-    console.log(result)
-    => null //Note: It returns null, not undefined.
-
+Untangle.unRespond("MessageType", callback)
+result = Untangle.reuest("MessageType", "data")
+console.log(result)
+=> null //Note: It returns null, not undefined.
+```
 
 
 ### Conveniency method
-    Untangle.helpers(); //Will activate prototypes on the String class:
-	
-	callback = function(data){console.log(data)}
-    "MessageType".subscribe(callback)
-    "MessageType".publish("data")
-    => "data"
-    "MessageType".unSubscribe(callback)
-    "MessageType".publish("data")
-    => no output
 
-    callback = function(data){data + " returned"}
-    "MessageType".respond(callback)
-    "MessageType".request("data")
-    => "data returned"
-    "MessageType".unRespond(callback)
-    "MessageType".request("data")
-    => null
+```javascript
+Untangle.helpers(); //Will activate prototypes on the String class:
+
+callback = function(data){console.log(data)}
+"MessageType".subscribe(callback)
+"MessageType".publish("data")
+=> "data"
+"MessageType".unSubscribe(callback)
+"MessageType".publish("data")
+=> no output
+
+callback = function(data){data + " returned"}
+"MessageType".respond(callback)
+"MessageType".request("data")
+=> "data returned"
+"MessageType".unRespond(callback)
+"MessageType".request("data")
+=> null
+```
 
 ## Testing
 
