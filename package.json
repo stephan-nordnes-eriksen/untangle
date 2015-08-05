@@ -1,10 +1,11 @@
 {
   "name": "untangle",
-  "version": "1.0.0",
-  "description": "Awesome module",
+  "version": "0.0.1",
+  "description": "Untangle is a library meant to create highly uncoupled code",
   "keywords": [
-    "keyword1",
-    "keyword2"
+    "event aggregator",
+    "pub sub",
+    "untangle"
   ],
   "homepage": "https://github.com/stephan-nordnes-eriksen/untangle",
   "bugs": "https://github.com/stephan-nordnes-eriksen/untangle/issues",
