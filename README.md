@@ -86,10 +86,16 @@ callback = function(data){data + " returned"}
 
 ### More methods
 
-#### .subscribeAll
+#### .subscribeAll + .unSubscribeAll 
 ```javascript
-callback = function(messageType, data){console.log("Got message of type" + messageType + ", with data " + data)}
+callback = function(messageType, data){console.log("Got message of type " + messageType + ", with data " + data)}
 Untangle.subscribeAll(callback) //Will receive every published message created. Great for logging all activity in the system.
+"whatever".publish("some data")
+=> "Got message of type whatever, with data some data"
+
+Untangle.unSubscribeAll(callback) 
+"whatever".publish("some data")
+=> no output
 ```
 
 #### .reroute + .unReroute
@@ -111,6 +117,14 @@ Untangle.unReroute("test", "test3")
 
 => no output
 ```
+
+#### .resetAll
+```javascript
+	Untangle.resetAll(data)
+```
+This will remove everything inside Untangle, all listeners, all responders everything.
+
+For this method to work you must supply the value `"HARD"` as data.
 
 ## Using Untangle on a system scale
 
