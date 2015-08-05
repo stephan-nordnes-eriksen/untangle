@@ -86,7 +86,8 @@ class Untangle
 		_reroutes[fromType][toType] = callback
 
 	@unReroute: (fromType, toType) ->
-		delete _reroutes[fromType][toType] if _reroutes[fromType] && _reroutes[fromType][toType]
+		if _reroutes[fromType] && _reroutes[fromType][toType]
+			delete _reroutes[fromType][toType]
 
 	@resetAll: (data) ->
 		if data == "HARD"

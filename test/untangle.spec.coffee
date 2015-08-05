@@ -21,16 +21,16 @@ describe 'untangle', ->
 
 	describe 'common properties', ->
 		it 'accepts a string and a callback function', ->
-			expect(Untangle.subscribe.bind(Untangle  , "Test", (->) )).to.not.throw(Error);
-			expect(Untangle.unSubscribe.bind(Untangle, "Test", (->) )).to.not.throw(Error);
-			expect(Untangle.respond.bind(Untangle    , "Test", (->) )).to.not.throw(Error);
-			expect(Untangle.unRespond.bind(Untangle  , "Test", (->) )).to.not.throw(Error);
+			expect(Untangle.subscribe  .bind(Untangle, "Test", (->))).to.not.throw(Error)
+			expect(Untangle.unSubscribe.bind(Untangle, "Test", (->))).to.not.throw(Error)
+			expect(Untangle.respond    .bind(Untangle, "Test", (->))).to.not.throw(Error)
+			expect(Untangle.unRespond  .bind(Untangle, "Test", (->))).to.not.throw(Error)
 		it 'throws error if callback isn\'t function', ->
-			expect(Untangle.subscribe   .bind(Untangle, "Test", 1 )).to.throw(Error);
-			expect(Untangle.unSubscribe .bind(Untangle, "Test", 1 )).to.throw(Error);
-			expect(Untangle.respond     .bind(Untangle, "Test", 1 )).to.throw(Error);
-			expect(Untangle.unRespond   .bind(Untangle, "Test", 1 )).to.throw(Error);
-			expect(Untangle.subscribeAll.bind(Untangle, "Test", 1 )).to.throw(Error);
+			expect(Untangle.subscribe   .bind(Untangle, "Test", 1 )).to.throw(Error)
+			expect(Untangle.unSubscribe .bind(Untangle, "Test", 1 )).to.throw(Error)
+			expect(Untangle.respond     .bind(Untangle, "Test", 1 )).to.throw(Error)
+			expect(Untangle.unRespond   .bind(Untangle, "Test", 1 )).to.throw(Error)
+			expect(Untangle.subscribeAll.bind(Untangle, "Test", 1 )).to.throw(Error)
 
 	describe ".subscribe", ->
 		it "receives published message of type", ->
@@ -101,7 +101,8 @@ describe 'untangle', ->
 			expect(spy).to.have.been.calledWith("data")
 			expect(spy2).to.have.been.calledWith("data")
 		it "does not crash if there are no subscribers", ->
-			expect(Untangle.publish.bind(Untangle, "messageType", "data")).to.not.throw(Error)
+			expect(Untangle.publish.bind(Untangle, "messageType", "data")).
+				to.not.throw(Error)
 
 	describe ".request", ->
 		it "request data from responder", ->
@@ -110,7 +111,8 @@ describe 'untangle', ->
 			assert(Untangle.request("messageType", "data"), 1)
 
 		it "does not crash if there are no responders", ->
-			expect(Untangle.request.bind(Untangle, "messageType", "data")).to.not.throw(Error)
+			expect(Untangle.request.bind(Untangle, "messageType", "data")).
+				to.not.throw(Error)
 		
 		it "returns null if there are no responders", ->
 			expect(Untangle.request("messageType", "data")).to.equal(null)
@@ -196,13 +198,13 @@ describe 'untangle', ->
 			Untangle.publish("messageType2", "data")
 			expect(spy).to.have.been.calledWith("data")
 
-		it "reroutes and transforms data of type1 to type2", ->
+		it "reroutes and edits data of type1 to type2", ->
 			spy = sinon.spy()
 			Untangle.subscribe("messageType", spy)
-			Untangle.reroute("messageType2", "messageType", ((data)-> data+" transformed"))
+			Untangle.reroute("messageType2", "messageType", ((data)-> data+" edited"))
 			Untangle.publish("messageType2", "data")
 
-			expect(spy).to.have.been.calledWith("data transformed")
+			expect(spy).to.have.been.calledWith("data edited")
 
 	describe ".unReroute", ->
 		it "does not reroutes messages of type1 to type2", ->
@@ -215,7 +217,7 @@ describe 'untangle', ->
 		it "does not reroutes and transforms data of type1 to type2", ->
 			spy = sinon.spy()
 			Untangle.subscribe("messageType", spy)
-			Untangle.reroute("messageType2", "messageType", ((data)-> data+" transformed"))
+			Untangle.reroute("messageType2", "messageType", ((data)-> data+" edited"))
 			Untangle.unReroute("messageType2", "messageType")
 			Untangle.publish("messageType2", "data")
 			spy.should.have.not.been.called
