@@ -62,26 +62,23 @@ console.log(result)
 ```
 
 
-### Conveniency method
+### Conveniency methods
+
+By calling `Untangle.helpers();` you will gain access to new methods on all string objects. These wraps the Untagle methods for conveniency. The available methods are:
 
 ```javascript
 Untangle.helpers(); //Will activate prototypes on the String class:
 
-callback = function(data){console.log(data)}
 "MessageType".subscribe(callback)
-"MessageType".publish("data")
-=> "data"
 "MessageType".unSubscribe(callback)
 "MessageType".publish("data")
-=> no output
 
-callback = function(data){data + " returned"}
 "MessageType".respond(callback)
-"MessageType".request("data")
-=> "data returned"
 "MessageType".unRespond(callback)
 "MessageType".request("data")
-=> null
+
+"MessageType".reroute("MessageType2")
+"MessageType".unReroute("MessageType2")
 ```
 
 ### More methods
@@ -106,14 +103,14 @@ Untangle.subscribe("test3", callback)
 Untangle.reroute("test", "test2")
 Untangle.reroute("test", "test3", function(data){data + " modified"})
 
-"test".publish("test", "data")
+"test".publish("data")
 
 => "data"
 => "data modified"
 
 Untangle.unReroute("test", "test2")
 Untangle.unReroute("test", "test3")
-"test".publish("test", "data")
+"test".publish("data")
 
 => no output
 ```
@@ -124,7 +121,7 @@ Untangle.unReroute("test", "test3")
 ```
 This will remove everything inside Untangle, all listeners, all responders everything.
 
-For this method to work you must supply the value `"HARD"` as data.
+For this method to work you must supply the value `"HARD"` as input parameter.
 
 ## Using Untangle on a system scale
 
