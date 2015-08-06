@@ -19,7 +19,7 @@ Used together these two features allow you to create truly decoupled code.
 ## Usage Example
 
 ### Abstract
-Untangle is a EventAggregator, or Pub/Sub, library. Untangle is meant to be used in a specific way. It is a library meant to create highly uncoupled code, meaning that classes and object has **NO** knowledge of each other. The addition, modification, or deletion of a class cannot affect any other class. To achieve this you must use Untangle in a specific way. There are a couple of rules:
+Untangle is an EventAggregator, or Pub/Sub, library. Untangle is meant to be used in a specific way. It is a library meant to create highly uncoupled code, meaning that classes and object has **NO** knowledge of each other. The addition, modification, or deletion of a class cannot affect any other class. To achieve this you must use Untangle in a specific way. There are a couple of rules:
 
 1. No classes can know about the existence of other classes.
 2. A class must be completely self-contained.
@@ -51,12 +51,12 @@ Untangle = require("untangle")
 
 callback = function(data){data + " returned"}
 Untangle.respond("MessageType", callback)
-result = Untangle.reuest("MessageType", "data")
+result = Untangle.request("MessageType", "data")
 console.log(result)
 => "data returned"
 
 Untangle.unRespond("MessageType", callback)
-result = Untangle.reuest("MessageType", "data")
+result = Untangle.request("MessageType", "data")
 console.log(result)
 => null //Note: It returns null, not undefined.
 ```
