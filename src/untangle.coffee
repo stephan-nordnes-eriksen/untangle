@@ -49,8 +49,10 @@ class Untangle
 				else
 					Untangle.publish(toType, data)
 
-	@request: (type, data) ->
-		return _responders[type](data) if _responders[type]
+	@request: () ->
+		type = arguments[0]
+		argumentsCopy = [].shift.apply(arguments)
+		return _responders[type].apply(this, arguments) if _responders[type]
 		return null
 
 	@helpers: ->
@@ -64,8 +66,9 @@ class Untangle
 			Untangle.unRespond(this.toString(), data)
 		String.prototype.publish = (data) ->
 			Untangle.publish(this.toString(), data)
-		String.prototype.request = (data) ->
-			Untangle.request(this.toString(), data)
+		String.prototype.request = () ->
+			[].unshift.call(arguments, this.toString())
+			Untangle.request.apply(this, arguments)
 		String.prototype.reroute = (data, callback) ->
 			Untangle.reroute(this.toString(), data, callback)
 		String.prototype.unReroute = (data) ->

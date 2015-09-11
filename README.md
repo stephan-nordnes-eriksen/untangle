@@ -51,12 +51,12 @@ Untangle = require("untangle")
 
 callback = function(data){data + " returned"}
 Untangle.respond("MessageType", callback)
-result = Untangle.reuest("MessageType", "data")
+result = Untangle.request("MessageType", "data")
 console.log(result)
 => "data returned"
 
 Untangle.unRespond("MessageType", callback)
-result = Untangle.reuest("MessageType", "data")
+result = Untangle.request("MessageType", "data")
 console.log(result)
 => null //Note: It returns null, not undefined.
 ```

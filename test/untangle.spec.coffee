@@ -35,7 +35,6 @@ describe 'untangle', ->
 	describe ".subscribe", ->
 		it "receives published message of type", ->
 			spy = sinon.spy()
-
 			Untangle.subscribe("messageType", spy)
 			Untangle.publish("messageType", "data")
 
@@ -59,6 +58,14 @@ describe 'untangle', ->
 			Untangle.request("messageType", "data")
 
 			expect(spy).to.have.been.calledWith("data")
+
+		it "callback is called with multiple data points", ->
+			spy = sinon.spy()
+
+			Untangle.respond("messageType", spy)
+			Untangle.request("messageType", "data", "data2", 3)
+
+			expect(spy).to.have.been.calledWith("data", "data2", 3)
 
 		it "returns data from callback", ->
 			spy = (-> "data2")
@@ -168,6 +175,11 @@ describe 'untangle', ->
 			"messageType".unRespond(spy)
 			"messageType".request("data")
 			spy.should.have.not.been.called
+		it "receives all data points", ->
+			spy = sinon.spy()
+			"messageType".respond(spy)
+			"messageType".request("data", "data2")
+			expect(spy).to.have.been.calledWith("data", "data2")
 		it "reroutes correctly", ->
 			spy = sinon.spy()
 			"messageType".subscribe(spy)
