@@ -1,6 +1,6 @@
 {
   "name": "untangle",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Untangle is a library meant to create highly uncoupled code",
   "keywords": [
     "event aggregator",
